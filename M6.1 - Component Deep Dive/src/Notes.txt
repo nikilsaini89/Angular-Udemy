@@ -60,5 +60,9 @@ enum Status {
 }
 and currentStatus: Status = Status.Online;
 
+********************    A typescript utility  ********************
+
+private intereval?: ReturnType<typeof setInterval>;
+
 
 
