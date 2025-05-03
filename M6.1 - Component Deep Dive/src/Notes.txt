@@ -1,0 +1,64 @@
+********************    NG-content :appButtoncomponent      ********************
+
+THe ng-content div is used for content projection. If there is more than one ng-content, then 
+we can use the select="" attribute which selects the class or type of content. It can select 
+multiple types like - 
+                <ng-content select="input, textarea"></ng-content>
+                                    or
+                <ng-content select=".icon"></ng-content>
+
+In place of classname, we can also use the other property which will be set by 
+    ngProjectAs="icon" in the consumer component. (use - select="icon")
+
+
+********************    encapsulation : control component    ********************
+
+encapsulation: ViewEncapsulation.None
+Disables the scoping of style in a component. Baically makes the Component Styles as Glonal Styles.
+
+********************    Host Element, Host Binding, Host listner :  control component, (:host in dashboard item too)********************
+
+Every component have a host element which is simply the element with component's selector in DOM.
+In styles, we can target the host element by using :host property
+If we set some component's encapsulation to None, then we can not target the host of that 
+component using :host because we have made them global, so they no longer belong to the component
+(sort-off). 
+Instead of using :host, we can go where it is being used and add the css class(control in this 
+case because .control input, .control textarea) to the parent component (app-control).
+
+Instead of doing it repetitively, we can define it in the component selector only.
+
+in crisp, 
+1) control component - encapsulation made styles global and added css selector as a class to parent 
+conponent via host {} property.
+2) dashboard item component - directly apply the css to host.
+
+********************    ElementRef :  control component ********************
+
+It is a part of the angular framework, which defines reference to some element that is rendered
+inside the page. We use it to access the host element inside our typescript code from the component
+where we use the host.
+
+
+********************    Dynamic Class binding :  Server Status component ********************
+<div [class.status] =  "currentStatus === 'online'", basically if current status is online, then
+apply status class to div.
+
+
+********************    Dynamic Style binding :  Traffic component ********************
+[style]="{}"   , Just like class binding, we can also bind style to a div
+
+
+********************    Enum :  Traffic component ********************
+currentStatus : 'online' | 'offline' | 'unknown' = 'online';
+
+above means that csts holds one of the 3 values, we can also make a enum like - 
+enum Status {
+  Online = 'online',
+  Offline = 'offline',
+  Unknown = 'unknown'
+}
+and currentStatus: Status = Status.Online;
+
+
+

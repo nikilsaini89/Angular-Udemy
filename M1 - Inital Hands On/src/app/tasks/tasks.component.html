@@ -1,0 +1,21 @@
+@if(isAddingTask){
+  <app-new-task (cancel)="closeAddTaskPopup()" (data)="patchData($event)"></app-new-task>
+}
+
+<section id="tasks">
+  <header>
+    <h2>{{ name }}'s Tasks</h2>
+    <menu>
+      <button (click)="showAddTaskPopup()">Add Task</button>
+    </menu>
+  </header>
+  @if(taskForSelectedUser){
+    <ul>
+      @for(task of taskForSelectedUser; track task.id){
+          <li>
+              <app-task [task]="task" (selectedTaskUserId)="completeEvent($event)"></app-task>
+          </li>
+      }
+    </ul>
+  }
+</section>
