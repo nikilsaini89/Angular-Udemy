@@ -1,27 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { timeInterval } from 'rxjs';
 
 @Component({
-  selector: 'app-server-status',
-  standalone: true,
-  imports: [],
-  templateUrl: './server-status.component.html',
-  styleUrl: './server-status.component.css'
+    selector: 'app-server-status',
+    imports: [],
+    templateUrl: './server-status.component.html',
+    styleUrl: './server-status.component.css'
 })
-export class ServerStatusComponent {
-  currentStatus : 'online' | 'offline' | 'unknown' = 'online';
-  constructor() {
+export class ServerStatusComponent implements OnInit{
+  currentStatus = signal<'online' | 'offline' | 'unknown'>('online');
+
+  constructor(){
+    effect(()=>{
+      console.log(this.currentStatus());
+    })
+  }
+
+  ngOnInit(): void {
     setInterval(() => { 
       const rnd = Math.random();
       if(rnd<0.4){
-        this.currentStatus = 'online';
+        this.currentStatus.set('online');
       }
       else if(rnd>0.7){
-        this.currentStatus = 'offline';
+        this.currentStatus.set('offline');
       }
       else{
-        this.currentStatus = 'unknown';
+        this.currentStatus.set('unknown');
       }
     }, 2000)
   }
+  
 }

@@ -61,4 +61,48 @@ enum Status {
 and currentStatus: Status = Status.Online;
 
 
+********************    @ViewChild and Template Variables :  New Ticket component ********************
+
+Template Variable - a vanilaa JS property, we can add #{name of template variable} lets say #form to a element in the html file.
+We will get access to the DOM element in the TS file by - 
+@ViewChild('form') private form ?: ElementRef<HTMLFormElement>;           // Html Component
+                  or
+private btn = viewChild.requied<ElementRef<appButtoncomponent>>('btn');    // self component
+
+
+********************    @ContentChild and Template Variables :  control component ********************
+
+private control = contentChild.required<ElementRef<HTMLInputElement | HTMLTextAreaElement>>('input');
+we have to add the template variable from the code where we are using control component. 
+
+
+********************    ngfterViewInit and ngAfterContentInit : new ticket and control component ********************
+
+If used @ViewChild , then the value of form will be undefined in ngoninit but defined on ngafterviewinit
+But if used viewChild function, then value will be defined in both oninit and afterviweinit.
+
+If used @ContentChild , then the value of form will be undefined in ngoninit but defined on ngafterContentinit
+But if used contentChild function, then value will be defined in both oninit and afterContentinit. 
+
+********************    afterender and after next render : control component ********************
+
+These talks about the whole app and not just the component and they are used in a constructor. 
+They take a function as input.
+
+********************   @for deep dive : tickets component html ********************
+
+there are other features that we can use like  and they all return true or false
+@for (ticket of tickets; track ticket.id){
+<li>
+    <app-ticket [ticketData]="ticket"  (close)="onCloseTicket(ticket.id)"/> {{$first}} {{$last}} {{$count}} {{$odd}} 
+    {{$even}}
+</li>
+} @empty{
+<p>No Tickets available</p>
+}
+
+********************  Two way dat binding between components : did notīmplement ********************
+
+can be done by custom input and output decorator.
+can be done by model() signal -------more advanced
 
