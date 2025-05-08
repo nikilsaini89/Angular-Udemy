@@ -6,10 +6,9 @@ import { TrafficComponent } from './dashboard/traffic/traffic.component';
 import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [HeaderComponent, ServerStatusComponent, TicketsComponent, TrafficComponent, DashboardItemComponent],
-  templateUrl: './app.component.html',
+    selector: 'app-root',
+    imports: [HeaderComponent, ServerStatusComponent, TicketsComponent, TrafficComponent, DashboardItemComponent],
+    templateUrl: './app.component.html'
 })
 export class AppComponent {
 
