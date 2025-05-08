@@ -60,9 +60,12 @@ enum Status {
 }
 and currentStatus: Status = Status.Online;
 
-********************    A typescript utility  ********************
+********************    A typescript utility : server status comp  ********************
 
 private intereval?: ReturnType<typeof setInterval>;
 
+********************    DestroyRef : server status comp ********************
+
+DestroyRef - a alternative to ngondestroy
 
 
