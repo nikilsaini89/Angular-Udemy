@@ -1,0 +1,17 @@
+Directives enhances an element
+extentsion - .directive.ts
+
+types - 
+i) Attribute Directives  - ngModel, do not change the structure of the dom
+ii) Structural Directives - ngif, change the structure of the dom, need to use * with it
+
+In modern angular, there are not built in structural directives left.
+
+need to add a standalone directive in the component's import to use it.
+
+We can set alias to input, alias will be th name referred to where component is used.
+for ex - queryParam = imput<string>('myapp', {alias: appSafeLink});
+myapp is default string, appSafeLink is alias
+
+*************************** DEPENDENCY INJECTION IN DIRECTIVES ******************
+private hostElementRef = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
