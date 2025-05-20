@@ -1,0 +1,71 @@
+-----------------------------------------AVOIDING ZONE POLLUTION-----------------------------------------
+
+To run a code outside the zone - we can wrap that part of the code 
+inside the 
+    const zone = inject(NgZone);
+    this.zone.runOutSideAngular(()=>{
+        
+        // CODE HERE
+    });
+
+----------------------------------------- ngOnPush STRATEGY -----------------------------------------
+This can be enabled on per component basis. In the Component Decorator, we can add 
+changeDetection: ChangeDetectionStrategy.onPush 
+
+Example - 
+@Component({
+  selector: 'app-messages',
+  standalone: true,
+  templateUrl: './messages.component.html',
+  styleUrl: './messages.component.css',
+  imports: [MessagesListComponent, NewMessageComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+
+This will help not only this component, but also other components that are being used in current component's template.
+This tells angular that this component will only ever change because of 
+i) any event occuring in the subcomponent tree (component and imports)
+ii) any @Input value changed in the subcomponent tree
+iii) Manually triggered change detection (Wil learn later in the course).
+iv) Signal Changes
+
+TO BE NOTED: OnPush does not restrict a component to effect other components, rather it restrict 
+other components to effect other components.
+
+
+----------------------------------------- Manual Change Detection using RxJs : MessagesListComponent ----------------------------------------- 
+messages$ = new  BehaviorSubject<string[]>([]); ========> Creating a behaviour subject using RxJs.
+this.messages$.next([...this.messages]); ========> Emitting value using the behaviour subject.
+
+const subscription = this.messageService.messages$.subscribe(        ========> Setting up subscription to behaviour subject 
+      (messages)=>{                                                             and usng change detection manually
+        this.messages = messages;
+        this.cdRef.markForCheck(); // Marking for changes manually.
+      }
+    )
+
+----------------------------------------- Async Pipe : MessagesListComponent ----------------------------------------- 
+The above approach needs alot of things to be handeled manually - 
+i) setting subscription
+ii) manual change detection
+iii) Clearing subscription
+
+but there is an alternative - asyncpipe, see the usafe in MessagesListComponent, 
+just store BehaviorSubject from service in a variable and pass that in the template. It will do all.
+ 
+
+----------------------------------------- Going Zoneless ----------------------------------------- 
+
+Just because Event binding(like click events) and signals are all angular thing, angular gets notified
+when any of these things occour, and for modern versions of angular, it is possible to go 
+Zoneless
+
+How - 
+step 1 - 
+bootstrapApplication(AppComponent, {
+    providers: [provideExperimentalZonelessChangeDetection()]
+}).catch((err) => console.error(err));
+
+step 2 - remove zone.js from angular.json
+                    
+
