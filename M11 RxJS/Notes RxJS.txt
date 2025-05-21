@@ -1,0 +1,41 @@
+---------------------------------- Creating an Observable : AppComponent ----------------------------------
+An observable is an object that stores and produces a stream of data.
+We need atleast one subscriber for an observable to emit the data(observables are functions directly used from 
+RxJS, like the interval function). The data is produced automatically.
+
+On the other hand, Subjects(AsyncSubject, BehaviourSubject etc) are also observables but here we
+need to manuaaly care of emitting the values using the next function.
+
+
+
+---------------------------------- Operators in RxJS : AppComponent ----------------------------------
+Operators are additional functions that we can use to manipulate the data emitted by our 
+observable. One such operator is map function which maps on all the data emitter and then we can
+manipulate the data using this function. Using Pipe we can do the same, pipe takes 
+functions as inputs.
+
+---------------------------------- Observables versus Signals ----------------------------------
+Both approaches can be used to achieve the same thing because we can update the signal value or use computed
+to maintain a new signal. 
+Also we can set up subscription using the effect method.
+Overall, we need to manage alot of things and write a lot of code if using signals.
+
+IN SHORT - Observables are good for managing events and streamed data. while Signals are 
+good at managing application state.
+
+---------------------------------- Converting Observables into Signals and Vice Versa : AppComponent----------------------------------
+check AppComponent
+
+------------------------------------------- Custom Interval : AppComponent -------------------------------------------
+We can create an observable using new Observable();
+this constructor takes a method, which thens takes the subscriber as an input.
+temp = new Observable((subscriber)  => {
+    //  login for when will the next, complete, and error message will be called. 
+});
+
+temp.subscribe({
+    // this is the place where we define what will happen when these methods will be called from the observable.
+    next: 
+    complete:
+    error: 
+})
