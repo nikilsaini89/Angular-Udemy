@@ -4,7 +4,7 @@ We need atleast one subscriber for an observable to emit the data(observables ar
 RxJS, like the interval function). The data is produced automatically.
 
 On the other hand, Subjects(AsyncSubject, BehaviourSubject etc) are also observables but here we
-need to manuaaly care of emitting the values using the next function.
+need to manuaaly care of emitting the values by using the next function.
 
 
 
@@ -30,7 +30,7 @@ check AppComponent
 We can create an observable using new Observable();
 this constructor takes a method, which thens takes the subscriber as an input.
 temp = new Observable((subscriber)  => {
-    //  login for when will the next, complete, and error message will be called. 
+    //  logic for when will the next, complete, and error message will be called. 
 });
 
 temp.subscribe({
