@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 
 import bodyParser from "body-parser";
-import express from "express";
+import express, { response } from "express";
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/places", async (req, res) => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
 
   const fileContent = await fs.readFile("./data/places.json");
 

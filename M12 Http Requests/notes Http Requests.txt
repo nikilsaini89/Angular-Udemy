@@ -1,0 +1,35 @@
+--------------------------- Http Client -----------------------------
+We need to set HttpClientProvider() to the providers array either in the component or in the main.ts for global use.
+For ngModule based component, we can pass it to app.module.ts
+
+get<{places: Place[]}>  ====> We can set the return type of the request using this.
+
+this.httpClient.get<{places: Place[]}>('http://localhost:3000/places' , {
+    observe: 'events'      
+})   =====>    this way, we can modify the type of data passed to the next function, 
+it will be event now and the next function will be triggered based on the number of events, like request sent, response received
+
+observe: 'response' ====> This way we can pass the whole http response object to the next function.
+
+pipe => 
+We can use pipe to add extra methods in the which can help us maintain our main observable(subscribe)
+code leaner. Functions like map, throwError can be of great use.
+
+catchError always want a to return a observable and we generally return a observable
+by creating it through throwError, which again takes a lambda function as input and we can
+create new Error() here
+
+tap => tap is one such function that can be used inside the pipe. We can write the same code inside
+tap that we write in our subscribe but without subscribing
+
+JUST AN FYI - instead of using update method, we can also use set method in case of signals
+
+Interceptors - These handles the httpRequest and httpResponse for the overall application, no matter
+where i am making the request or getting the response.
+In modern angular versions, we enable them in the HttpClientProvider in main app configuration - 
+{
+    providers: [provideHttpClient(withInterceptors([]))]
+}
+And in this array, we provide all the interceptors functions. In earlier angular functions, there interceptors
+used to be be classes. The function requres two inputs - request: httpRequest<unknown>, next: httpHandlerfn.
+We return next(request) in interceptors.
