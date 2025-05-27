@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 
-import { AvailablePlacesComponent } from './places/available-places/available-places.component';
-import { UserPlacesComponent } from './places/user-places/user-places.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  imports: [AvailablePlacesComponent, UserPlacesComponent],
+  imports: [LoginComponent],
 })
 export class AppComponent {}

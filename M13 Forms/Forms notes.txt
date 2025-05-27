@@ -1,0 +1,32 @@
+Forms are of two types - 
+                            i) Template driven forms(More basic and beginner friendly) 
+                            ii) Reactive Forms(More advanced)
+
+Template driven forms are similar to basic html forms, but we apply directives,
+to fields of the forms, that lets angular know about the form elements and use the provided 
+functionality to intereact with the forms
+ngModel directive(without two way binding) also registers the Html elements to angular. For ngModel
+to work, the element should have name attribute attached to .because ngmodel use this name to
+register element to angular.
+
+### Accessing Template Driven Forms registered by Angulr. - 
+FYI - By importing formsModule (essential for using ngModel), angular also registers that we are using
+html form element in our html.
+We can set template-varible on the form and then this template varible will register to the
+Html Form element, but angular allow us template variable to bind to something other 
+then html form element by passing a special directive "ngForm" directive provided by the html 
+form element. And now the template variable binds to the ngForm objects. which is an object created 
+by Angular and our template variable stores this form manager by angular.
+Ex - 
+<form #form="ngForm" #form2 (ngSubmit)="onSubmit(form, form2)">
+
+### Validating input with validation directives- 
+required - this directive can be used with vanilla javascript and browser will add some validaitons
+but when used on a element with ngModel directive, this angular takes the charge and shuts off 
+browser vlaidations.
+Simialar way we can use directives like - email, minlength, pattern etc
+But we still can submit empty form because it does not prevent form submissions, rather the 
+the values stored in internally managed angular form will now change.
+Also, in template driven forms we can get form level info or control (like email pass(registered with ngmodel)) level info as 
+per out requirements.
+we can directly access controls by setting #email="ngModel" on the element.
