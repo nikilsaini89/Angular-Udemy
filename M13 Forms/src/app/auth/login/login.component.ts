@@ -14,7 +14,8 @@ export class LoginComponent {
   private destroyRef = inject(DestroyRef);
 
   constructor() {
-    afterNextRender(() => {
+    afterNextRender(() => { // using this because we have a template based form and template may
+      //not be initiliased by the time i am using it in the ts file.
       const saved = window.localStorage.getItem('login-form')
       if(saved){
         const parsed = JSON.parse(saved);

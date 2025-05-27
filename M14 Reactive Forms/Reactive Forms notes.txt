@@ -1,0 +1,90 @@
+Reactive Forms are forms that are not set up in the template of the code, but in the ts file.
+
+We need to import reactiveFormsModule to use reactive forms in the components import.
+
+form = new FormGroup({  ===> this is how we initialise a form
+    key: value
+})
+
+and in the html, we can bind our form to our html elements by - 
+<form [formGroup]="form">
+<input id="email" type="email" [formControl]="form.controls.email"/>
+                                OR
+<input id="email" type="email" formControlName="email"/>
+
+--------------------------------------------VALIDATORS : logincomponent--------------------------------------------
+
+We can add validators like -
+email: new FormControl('', []),
+                OR
+email: new FormControl('', {
+    validators: []
+}),
+ans with this, all the classes that are added to input elements (pristine, touched, 
+invalid etc) still works the same.
+
+A Form Group also takes a second argument, which is a configuration argument like above and there we can set
+validators that we want to apply to all the controls in that FormGroup
+
+
+-------------------------------------------- CUSTOM VALIDATORS : logincomponent--------------------------------------------
+Custom validator is just a function that returns null if the condition is met, 
+else it return a error object (sort of)
+The custom validator takes an input (control: AbstractControl), which in turn gets the 
+control on which the validation is applied
+
+-------------------------------------------- Async VALIDATORS and of() from rxjs: logincomponent--------------------------------------------
+These are the also functions but must return an observable. And these observable contains a value 
+of null if the control is valid, else the same error object. We can use of function which helps us to 
+generate and return an observable. 
+Example usage - Sent http request to backend to check if an the user already exists
+
+-------------------------------------------- patch value method --------------------------------------------
+This method is used to set/update the form partially(or fully). 
+
+Usage - this.form.patchvalue({
+    email: "Custom Email here"          // and this way we can modify all the controls
+})
+-------------------------------------------- NESTED FORM Group --------------------------------------------
+
+We can make nested form groups i.e one formgroup inside the other.
+The way we will use it on the element will remain the same, but if, lets say we have - 
+
+formGroup1 
+    formControl1
+    formControl2
+    formGroup2
+        formControl3
+        formControl4
+
+formGroup2 is nested in formGroup. The way formControl3/4 will be used is same, but 
+we need to map formGroup2 in the html on the div which is parent of formControl3, formControl4
+How to register? - 
+
+[formGroup]="form.controls.passwords"
+or
+formGroupName="passwords"
+
+
+-------------------------------------------- FORM ARRAYS : Signup component--------------------------------------------
+Creation ====> source: new FormArray([
+                new FormControl(false),
+                new FormControl(false),
+                new FormControl(false),
+                ]),
+
+Binding Parent ====> formArrayName="source"
+Binding Child element ===> formControlName="0", "1"..
+
+
+-------------------------------------------- CUSTOM VALIDATORS WITH INPUTS: Signup component--------------------------------------------
+
+function equalValue(control1: string, control2: string){            // WE PASSES TWO CONTROLS THAT NEEDS TO BE CHECKED
+  return (control: AbstractControl)=>{
+    const val1 = control.get(control1)?.value;
+    const val2 = control.get(control2)?.value;
+
+    if(val1==val2) return null;
+    return {valuesNotEqaul: true};
+  }
+}
