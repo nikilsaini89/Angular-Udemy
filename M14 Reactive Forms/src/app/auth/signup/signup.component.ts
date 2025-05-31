@@ -48,8 +48,8 @@ export class SignupComponent {
     role: new FormControl(''),
     agree: new FormControl(''),
   })
-  
-  onSubmit(){
+  onSubmit(){ 
+    debugger;
     console.log(this.form);
   }
   onReset(){

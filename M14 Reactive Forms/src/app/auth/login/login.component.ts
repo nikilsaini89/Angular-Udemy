@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
         next: (value) => window.localStorage.setItem('saved-form', JSON.stringify({email: value.email}))
       }
     )
+    debugger;
 
     this.destroyRef.onDestroy(()=>subscription.unsubscribe());
   }
