@@ -8,3 +8,13 @@ ul {
   max-height: 50vh;
   overflow: auto;
 }
+
+a{
+  color: rgb(2, 96, 204);
+}
+
+
+a:hover,
+a:active{
+  color: rgb(4, 75, 156);
+}

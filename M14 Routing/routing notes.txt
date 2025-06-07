@@ -1,0 +1,94 @@
+--------------------------------- What is Routing and how to enable ------------------
+A  route is just an object, which contains path and the component class name, 
+Now there can be multiple routes,  so pass a list(array) of object to provideRouter()
+function, which is passed to providers array in bootstrap application.
+
+--------------------------------- Router Outlet --------------------------------------
+We define router-outlet wherever we want to use the componenent in the window in that particular.
+To be precise, We can define it so that the navigation bar.header footer etc are shown as 
+per oue needs   
+
+--------------------------------- routerLink Directive--------------------------------------
+Though we can use anchor tags to redirect to /tasks route, but because of that, the whole application
+loads from scratch and the files are also loaded, which results in the applicationbeing slower
+and bad user experience, so we use routerLink Directive here.This Directive blocks the browser default 
+behaviour to re-fetch the javascript documents
+
+--------------------------------- Dynamic Routes --------------------------------------
+We can have dynamic routes where atleast some part of the route is dynamic. It is denoted by
+:dynamicPath
+
+setting dynamic route in routerLink directive:-
+i) routerLink takes array as input and concatinates all the array elements and 
+also inserts a slash (/) at the end of each element. 
+    [routerLink]="['/users', user().id]" 
+ii) We can pass it like this -
+    [routerLink] = "'/routes/ + user().id'"
+
+--------------------------------- Input Binding / withComponentInputBinding() : UserTasksComponent ------------
+We can extract the dynamic path from the route by setting a input property with the same
+name as in the route (userId in this case) and pass withComponentInputBinding() as the 
+second paramter to the provideRouter function, which itself is passed in the providers 
+array.
+
+--------------------------------- ActivatedRoute Service & Param Map (Alternative to withComponentInputBinding): UserTasksComponent --------------------------------- 
+Param Map is a  observable field in the activated Route service, which changes on any change in the 
+route and we can subscribe to this field to get knotified about the changes.
+
+paramMap contains a key-value pair where key is the actual string we set up in route 
+and its value is the string from url, basically if key is :uid then value is what we see 
+in the url : u3, u4 etc
+
+--------------------------------- Nested Routes : app.routes.ts/UserTasksComponent ------------
+In case of nested routes, we should tell angular, where to render this route. Even though we 
+have a router-outlet in our app but that is for our main app, for the child route, we need a separate
+router-outlet, in the parent component.
+
+--------------------------------- Relative Route Links : UserTasksComponent ---------------------------------
+Though for the Add Task button in the UserTasksComponent, we can set the routerLink
+to be /users/{id}/tasks/new by fetching the id somehow, but angular allows us to add 
+relative links to the link currently active (basically the route of the parent component)
+
+--------------------------------- Input Binding & paramMap : Part 2 : TasksComponent, AppConfig --------------------------------- 
+Just like we can get userId (or lets say the dynamic path values)
+in the UserTasksComponent, we can get it in the child component as well. 
+i) For paramMap approach, it will work same and there are no changes/add-ons required.
+ii) For Input Binding approach, there are certain add-ons required, we basically need to tell
+angular about our intentions are let it know that we want the dynamic route data values inside
+our child componenent too. We do so by adding 
+                paramsInheritanceStrategy: 'always'  
+in the withRouterConfig configuration in the provideRotuer function in the main configuration.
+
+--------------------------------- Programitcally Router Navigate --------------------------------- 
+We can navigate to different url, not just by routerLink but also programatically in our
+.ts file -
+    this.router.navigate(['/users', this.userId(), 'tasks'], {
+      replaceUrl: true
+    });
+where replaceUrl is just a configuration, which restricts the user to go to the same page on
+back button click supprted by the browser
+
+---------------------------------- Redirecting in Routing -----------------------------------
+{
+    path: '',
+    redirectTo: 'tasks',
+    pathMatch: 'prefix'
+}
+
+We can redirect the user from one route to other route by defining the above route.
+here pathMatch can be set to full or prefix, which means that the path (if it is a 
+child route, then parent route path + child route path) 's prefix matched to the current
+url or the path matches with the url to the full.
+
+--------------------------------- ActivatedRoute versus ActivatedRoute SnapShot ----------------------
+We use ActivatedRoute to use different observables to subscribe to them. But just in case we do not need
+observables (maybe our component is not getting used again and again and we just need route value(:userId) only once).
+Then instead of using ActivatedRoute, we can use ActivatedRoute SnapShot, which is -
+            this.activatedRoute.snapshot.paramMap.get('userId);
+Just an Alternative to basic activated Routes
+
+-------------------------------- Adding Query Params : TasksComponent---------------------------------------
+[queryParams]="{order: order === 'asc' ? 'desc' : 'asc'}">
+We can add query params like this
+
+

@@ -1,10 +1,12 @@
 import { Component, computed, input } from '@angular/core';
 
 import { type User } from './user.model';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   standalone: true,
+  imports: [RouterLink],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
 })
