@@ -91,4 +91,104 @@ Just an Alternative to basic activated Routes
 [queryParams]="{order: order === 'asc' ? 'desc' : 'asc'}">
 We can add query params like this
 
+-------------------------------- Extracting Query Params : TasksComponent---------------------------------------
+The are two ways: -
+i) If we got withComponentInputBinding enabled in the application, then just like we extract 
+the value of dynamic route
+ii) queryParams Observable Approach
 
+
+-------------------------------- Adding Static Data to Routes : UserTasksComponent---------------------------------------
+We can pass static data to routes in the app.routes.ts like this :
+        data: {
+            message: 'Hello'
+        }
+and we can get hold of this data simply by 
+        message = input.required<>();
+
+
+-------------------------------- Adding Dynamic Data to Routes: Resolve: UserTasksComponent---------------------------------------
+We can pass dynamic data to routes in the app.routes.ts like this :
+        resolve: []      In the array we pass resolver functions (as per modern angular,
+                        because earlier they used to be classes)
+RESOLVER FUNCTION: This function is a special type of function (of type ResolveFn), and it accepts
+two parameters - ActivatedRouteSnapshot and RouterStateSnapshot. While creating this, We basically 
+store a lambda function in a paramter.
+IMPORTANT - Moreover, this function gets reexecuted everytime the route becomes active, basically
+even if the dynamic part of the route changes (but not if the routeParams changes but we can configure 
+this behaviour, check below) and that is the reason we need ActivatedRouteSnapshot and not activatedRoute 
+because we do not need a subscription here because the function it self will be reexecuted everytime 
+the params or something in the route changes.
+
+/**
+ * CLASS BASED RESOLVED
+@Injectable({ providedIn: 'root' })
+export class UserNameResolver implements Resolve<string> {
+  constructor(private usersService: UsersService) {}
+  resolve(activatedRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const userName =
+      this.usersService.users.find(
+        (u) => u.id === activatedRoute.paramMap.get('userId')
+      )?.name || '';
+    return userName;
+  }
+}
+*/
+
+
+-------------------------------- Accessing Dynamic and static data -------------------------------- 
+Two ways:- 
+i) If we have withComponentInputBinding enables, we can directly set input with the same name 
+as to which we passed the value. For example:
+    userNameByResolverFunction: resolverUserName
+for this, our input is:
+userNameByResolverFunction = input<string>();
+
+ii) Observable approach using ActivatedRoute.
+The activated route dont just have paramMap or params property, but also data property
+which yeilds and observable, basically it runs everytime the route changes. This data contains
+all the static and dynamically resolved data inside it.
+
+
+------------------------------- Configuring Resolver functions -----------------------------
+By default, the resolver function only gets executed if the dynamic part of the route changes
+but not if the queryParams changes, but we can reset this behaviour to run even if the queryParams 
+changes by setting runGuardsAndResolvers to 'always' or 'paramsOrQueryParamsChanges'. 
+Though this part is not implemented in the code.
+TLDR: add runGuardsAndResolvers: 'paramsOrQueryParamsChange' in the route
+
+------------------------------- Passing Static and Dynamic Data to Routes --------------------
+We can set Title to a route, which will be shown on the tab. This title can be static or dynamic
+static is a simple string and dynamic is a resolver function
+
+------------------------------- Route Guards : App.Route.ts--------------------
+They restrict access to a route and its child routes.
+They are of 4 types:
+i) canActivate: somewhat similar to canMatch but it comes into picture after canMatch and before
+the component is being loaded
+ii) canActivateChild
+iii) canDeactivate: controls if the user can leave a component/route
+iv) canMatch (similar to canActivate but bit more modern and versatile): This route allows
+you to control weather the route should be matched by a url or not 
+
+All these can properties take arrays and the array itself contain functions in modern
+angular and classes in older versions of angular
+
+Route Guard Functions:- Similar to resolver functions, we store a function in a constant and 
+the type of the constant is CanMatchFn for canMatch guard. 
+Return statements - They return a boolean or a redirect command or both wrapped in an observable. \
+In case of false, we dont generally return false, but we return a new RedirectCommand()
+
+Check route.ts to see class based canMacthGuard
+
+------------------------------- canDeactivate guard: NewTaskComponent & user.routes.ts--------------------
+
+Can deactivate guard is used to restrict the user from leaving the page, maybe becasue user 
+have some information filled and then the user will loose it.   
+We define it in similar way as resolver ( a function stored in a const). The definition looks like:
+export const nameOfFunction: canDeactivateFn<NewTaskComponent> = 
+  (component) => {
+    // logic here, return true if the user can leace
+  }
+The canDeactivateFn takes component and we get the instance of that component in the 
+lambda function
